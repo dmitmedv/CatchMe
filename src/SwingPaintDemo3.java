@@ -44,18 +44,22 @@ class MyPanel extends JPanel implements KeyListener  {
             public void actionPerformed(ActionEvent actionEvent) {
 
                 // monster1
-                if (player.getX() > monster.getX()) monster.move(2);
-                if (player.getX() < monster.getX()) monster.move(4);
-                if (player.getY() > monster.getY()) monster.move(3);
-                if (player.getY() < monster.getY()) monster.move(1);
-                if (player.getX() == monster.getX() && player.getY() == monster.getY()) gameOver = true;
+                if (player.getX() > monster.getX())
+                    {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10) ) ) monster.move(2);}
+                 if (player.getX() < monster.getX())
+                    {if ( map.isFreeXY( ((monster.getX()-2)/10)-1, ((monster.getY()-2)/10) ) ) monster.move(4);}
+                 if (player.getY() > monster.getY())
+                    {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10)+1 ) ) monster.move(3);}
+                 if (player.getY() < monster.getY())
+                    {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10)-1 ) ) monster.move(1);}
+                 if (player.getX() == monster.getX() && player.getY() == monster.getY()) gameOver = true;
 
                 // monster2
-                if (player.getX() > monster2.getX()) monster2.move(2);
+                /*if (player.getX() > monster2.getX()) monster2.move(2);
                 if (player.getX() < monster2.getX()) monster2.move(4);
                 if (player.getY() > monster2.getY()) monster2.move(3);
                 if (player.getY() < monster2.getY()) monster2.move(1);
-                if (player.getX() == monster2.getX() && player.getY() == monster2.getY()) gameOver = true;
+                if (player.getX() == monster2.getX() && player.getY() == monster2.getY()) gameOver = true;*/
                 repaint();
             }
         };
@@ -66,7 +70,7 @@ class MyPanel extends JPanel implements KeyListener  {
 
     Player player = new Player(Color.BLUE, 0, 0);
     Player monster = new Player(Color.RED, 280,280);
-    Player monster2 = new Player(Color.RED, 280, 0);
+    //Player monster2 = new Player(Color.RED, 280, 0);
     GameMap map = new GameMap();
 
     public void keyPressed(KeyEvent keyEvent) {
@@ -74,16 +78,17 @@ class MyPanel extends JPanel implements KeyListener  {
         if(gameOver) return;
         switch (keyEvent.getKeyCode()) {
             case 37:
-                player.move(4);
+                //if (map.isFreeXY())
+                if ( map.isFreeXY( ((player.getX()-2)/10)-1, ((player.getY()-2)/10) ) ) player.move(4);
                 break;
             case 38:
-                player.move(1);
+                if ( map.isFreeXY( ((player.getX()-2)/10), ((player.getY()-2)/10)-1 ) ) player.move(1);
                 break;
             case 39:
-                player.move(2);
+                if ( map.isFreeXY( ((player.getX()-2)/10)+1, ((player.getY()-2)/10) ) ) player.move(2);
                 break;
             case 40:
-                player.move(3);
+                if ( map.isFreeXY( ((player.getX()-2)/10), ((player.getY()-2)/10)+1 ) ) player.move(3);
                 break;
         }
         repaint();
@@ -96,7 +101,7 @@ class MyPanel extends JPanel implements KeyListener  {
         super.paintComponent(g);
         player.paintPlayer(g);
         monster.paintPlayer(g);
-        monster2.paintPlayer(g);
+        //monster2.paintPlayer(g);
         map.paintMap(g);
         if (gameOver) {
             g.drawString("GAME OVER", 20, 20);
@@ -167,33 +172,61 @@ class Player {
 }
 
 class GameMap {
+
+    int map[][] = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
+
+    public boolean isFreeXY(int x, int y) {
+        return map[y][x] == 0;
+    }
+
     public void paintMap(Graphics g) {
-        for(int x = 0; x <= 300; x+=10) {
+        for (int x = 0; x <= 300; x+=10) {
             g.drawLine(0 + x, 0, 0 + x, 300);
             g.drawLine(0, 0 + x, 300, 0 + x);
         }
+
+        // walls
+        /*for (int x = 0; x <= 90; x+=10) {
+            g.fillRect(0 + x, 100, 10, 10);
+            g.fillRect(200 + x, 100, 10, 10);
+        }*/
+        for (int y = 0; y < 30; y++) {
+            for (int x = 0; x < 30; x++) {
+                if (map[y][x] == 1) {
+                    g.fillRect(x*10, y*10, 10, 10);
+                }
+            }
+        }
     }
 }
-
-/*
-class Monster implements Runnable {
-    Thread t;
-    Graphics g;
-    Monster() {
-        t = new Thread(this, "Demo");
-        System.out.println("Create thread");
-        t.start();
-    }
-
-    public void run() {
-        try {
-            for(int i = 5; i > 0; i--) {
-                System.out.println("t: " + i);
-                Thread.sleep(3000);
-            }
-        } catch (InterruptedException e) {
-            System.out.println("t-break");
-        }
-        System.out.println("t-end");
-    }
-}*/
