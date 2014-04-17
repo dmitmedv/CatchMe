@@ -1,29 +1,14 @@
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.BorderFactory;
 import javax.swing.Timer;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.*;
-import javax.swing.Timer;
 
 class SwingPaintDemo3 {
-
     public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-
-    private static void createAndShowGUI() {
-        System.out.println("Created GUI on EDT? "+
-                SwingUtilities.isEventDispatchThread());
-        JFrame f = new JFrame("Swing Paint Demo");
+        JFrame f = new JFrame("Game1");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MyPanel panel = new MyPanel();
         panel.addKeyListener(panel);
@@ -32,53 +17,39 @@ class SwingPaintDemo3 {
         f.setSize(400, 400);
         f.setVisible(true);
     }
-
 }
 
 class MyPanel extends JPanel implements KeyListener  {
-
     public boolean gameOver = false;
-
     MyPanel() {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-
                 // monster1
                 if (player.getX() > monster.getX())
                     {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10) ) ) monster.move(2);}
-                 if (player.getX() < monster.getX())
+                if (player.getX() < monster.getX())
                     {if ( map.isFreeXY( ((monster.getX()-2)/10)-1, ((monster.getY()-2)/10) ) ) monster.move(4);}
-                 if (player.getY() > monster.getY())
+                if (player.getY() > monster.getY())
                     {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10)+1 ) ) monster.move(3);}
-                 if (player.getY() < monster.getY())
+                if (player.getY() < monster.getY())
                     {if ( map.isFreeXY( ((monster.getX()-2)/10)+1, ((monster.getY()-2)/10)-1 ) ) monster.move(1);}
-                 if (player.getX() == monster.getX() && player.getY() == monster.getY()) gameOver = true;
+                if (player.getX() == monster.getX() && player.getY() == monster.getY()) gameOver = true;
 
-                // monster2
-                /*if (player.getX() > monster2.getX()) monster2.move(2);
-                if (player.getX() < monster2.getX()) monster2.move(4);
-                if (player.getY() > monster2.getY()) monster2.move(3);
-                if (player.getY() < monster2.getY()) monster2.move(1);
-                if (player.getX() == monster2.getX() && player.getY() == monster2.getY()) gameOver = true;*/
                 repaint();
             }
         };
         Timer timer = new Timer(200, actionListener);
         timer.start();
-
     }
 
     Player player = new Player(Color.BLUE, 0, 0);
     Player monster = new Player(Color.RED, 280,280);
-    //Player monster2 = new Player(Color.RED, 280, 0);
     GameMap map = new GameMap();
 
     public void keyPressed(KeyEvent keyEvent) {
-        //System.out.println(keyEvent.getKeyCode());
         if(gameOver) return;
         switch (keyEvent.getKeyCode()) {
             case 37:
-                //if (map.isFreeXY())
                 if ( map.isFreeXY( ((player.getX()-2)/10)-1, ((player.getY()-2)/10) ) ) player.move(4);
                 break;
             case 38:
@@ -101,7 +72,6 @@ class MyPanel extends JPanel implements KeyListener  {
         super.paintComponent(g);
         player.paintPlayer(g);
         monster.paintPlayer(g);
-        //monster2.paintPlayer(g);
         map.paintMap(g);
         if (gameOver) {
             g.drawString("GAME OVER", 20, 20);
@@ -126,23 +96,18 @@ class Player {
     public void setX(int xPos){
         this.xPos = xPos;
     }
-
     public int getX(){
         return xPos;
     }
-
     public void setY(int yPos){
         this.yPos = yPos;
     }
-
     public int getY(){
         return yPos;
     }
-
     public int getWidth(){
         return width;
     }
-
     public int getHeight(){
         return height;
     }
@@ -216,11 +181,6 @@ class GameMap {
             g.drawLine(0, 0 + x, 300, 0 + x);
         }
 
-        // walls
-        /*for (int x = 0; x <= 90; x+=10) {
-            g.fillRect(0 + x, 100, 10, 10);
-            g.fillRect(200 + x, 100, 10, 10);
-        }*/
         for (int y = 0; y < 30; y++) {
             for (int x = 0; x < 30; x++) {
                 if (map[y][x] == 1) {
