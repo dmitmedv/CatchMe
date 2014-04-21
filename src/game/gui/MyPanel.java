@@ -22,20 +22,18 @@ class MyPanel extends JPanel implements KeyListener {
     MyPanel() {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                /*if (monster.currX == player.currX && monster.currY == player.currY) {
+                if (monster.currX == player.currX && monster.currY == player.currY) {
                     System.out.println("GAME OVER!!!");
-                    int de =1;
-                }*/
+                    gameOver = true;
+
+                    int de = 1;
+                }
                 monster.moveXY(  monster.getNextStep()  );
-                /*if (monster.currX == player.currX && monster.currY == player.currY) {
-                    System.out.println("GAME OVER!!!");
-                    int de =1;
-                }*/
 
                 repaint();
             }
         };
-        Timer timer = new Timer(2000, actionListener);
+        Timer timer = new Timer(700, actionListener);
         timer.start();
     }
 
@@ -64,6 +62,6 @@ class MyPanel extends JPanel implements KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         map.paint(g);
-        if (gameOver) g.drawString("GAME OVER", 20, 20);
+        if ( gameOver ) g.drawString("GAME OVER", 20, 20);
     }
 }

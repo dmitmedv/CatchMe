@@ -4,9 +4,9 @@ import game.arena.GameMap;
 import java.awt.*;
 import game.util.*;
 
-abstract class APersonage {
-    protected int currX;
-    protected int currY;
+public abstract class APersonage {
+    public int currX;
+    public int currY;
     protected boolean visible = true;
     protected Color color;
     public GameMap gmap;
