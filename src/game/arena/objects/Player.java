@@ -13,8 +13,8 @@ public final class Player extends APersonage {
     public void paint(Graphics g) {
         g.setColor(color);
         g.fillRect(
-                currX* GameMap.SIZE_FIELD+2,
-                currY*GameMap.SIZE_FIELD+2,
+                currY* GameMap.SIZE_FIELD+2,
+                currX*GameMap.SIZE_FIELD+2,
                       GameMap.SIZE_FIELD-3,
                       GameMap.SIZE_FIELD-3
         );

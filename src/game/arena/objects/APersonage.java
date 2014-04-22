@@ -35,10 +35,10 @@ public abstract class APersonage {
 
     final public void move(int direct) {
         switch (direct) {
-            case Direction.UP:   currY--; break;
-            case Direction.LEFT: currX--; break;
-            case Direction.DOWN: currY++; break;
-            case Direction.RIGHT:currX++; break;
+            case Direction.UP:   currX--; break;
+            case Direction.LEFT: currY--; break;
+            case Direction.DOWN: currX++; break;
+            case Direction.RIGHT:currY++; break; // *
         }
     }
     abstract public void paint(Graphics g);
