@@ -4,9 +4,6 @@ import game.arena.GameMap;
 
 import java.awt.*;
 
-/**
- * Created by dmedvedev on 21.04.2014.
- */
 public final class Player extends APersonage {
 
     public Player(int startX, int startY, Color c) {

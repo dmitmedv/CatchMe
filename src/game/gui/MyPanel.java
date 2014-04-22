@@ -3,6 +3,7 @@ package game.gui;
 import game.arena.GameMap;
 import game.arena.objects.Monster;
 import game.arena.objects.Player;
+import game.util.Coord;
 import game.util.Direction;
 
 import javax.swing.*;
@@ -28,12 +29,13 @@ class MyPanel extends JPanel implements KeyListener {
 
                     int de = 1;
                 }
-                monster.moveXY(  monster.getNextStep()  );
+                Coord tmp = monster.getNextStep();
+                monster.moveXY(  tmp  );
 
                 repaint();
             }
         };
-        Timer timer = new Timer(700, actionListener);
+        Timer timer = new Timer(2000, actionListener);
         timer.start();
     }
 

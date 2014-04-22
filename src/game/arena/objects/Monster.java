@@ -101,29 +101,32 @@ public final class Monster extends APersonage {
         }
         path.push(new Coord(this.path_map[p.x][p.y].x, this.path_map[p.x][p.y].y));
         System.out.println("stack-> " + path.peek());
-        int d =1;
         return backTrace(path.peek());
     }
 
     public Coord getNextStep() {
         this.setupSearch();
         this.BFS();
-        if (!fFlag) {
-            int error = 1;
-        }
-        int deb = this.x + this.y;
         return this.backTrace(new Coord(this.x, this.y));
     }
 
     public void paint(Graphics g) {
         g.setColor(color);
         g.fillRect(
-                currX*GameMap.SIZE_FIELD+2,
                 currY*GameMap.SIZE_FIELD+2,
+                currX*GameMap.SIZE_FIELD+2,
                       GameMap.SIZE_FIELD-3,
                       GameMap.SIZE_FIELD-3
         );
         g.setColor(Color.BLACK);
+    }
+
+    private Coord revertXY(Coord p) {
+        int tmp;
+        tmp = p.x;
+        p.x = p.y;
+        p.y = tmp;
+        return p;
     }
 
 }
