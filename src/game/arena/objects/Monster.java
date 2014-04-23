@@ -52,7 +52,7 @@ public final class Monster extends APersonage {
         //System.out.println("->" + curr.x + ", " + curr.y + " : " + this.tmp_map[curr.x][curr.y]); // BFS log
         if (this.tmp_map[curr.x][curr.y] == 6) {
             fFlag = true;
-            System.out.println("FIND:" + curr.x + " " + curr.y);  // location log
+            //System.out.println("FIND:" + curr.x + " " + curr.y);  // location log
             xPlayer = curr.x;
             yPlayer = curr.y;
             return;
@@ -82,10 +82,13 @@ public final class Monster extends APersonage {
         this.BFS();
     }
 
-    private Coordinate backTrace(Coordinate p) {
+    private Coordinate backTrace(Coordinate p) {  // stupid logic!!!
         if (this.path_map[p.x][p.y].x == p.x && this.path_map[p.x][p.y].y == p.y) {
             if (!pathToPlayer.empty()) {
-                pathToPlayer.pop();
+
+                Coordinate tmp = pathToPlayer.pop();
+                System.out.println(tmp);
+                if (pathToPlayer.empty()) return this.gmap.player.getCurrentPos();    // VERY stupid logic!!!
                 Coordinate result = pathToPlayer.peek();
                 return result;
             }
@@ -107,8 +110,8 @@ public final class Monster extends APersonage {
         g.fillRect(
                 currY * GameMap.SIZE_FIELD + 2,
                 currX * GameMap.SIZE_FIELD + 2,
-                        GameMap.SIZE_FIELD - 3,
-                        GameMap.SIZE_FIELD - 3
+                GameMap.SIZE_FIELD - 3,
+                GameMap.SIZE_FIELD - 3
         );
         g.setColor(Color.BLACK);
     }

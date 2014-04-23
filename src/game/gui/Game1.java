@@ -10,7 +10,7 @@ public class Game1 {
         panel.addKeyListener(panel);
         panel.setFocusable(true);
         f.add(panel);
-        f.setSize(400, 400);
+        f.setSize(620, 670);
         f.setVisible(true);
     }
 }

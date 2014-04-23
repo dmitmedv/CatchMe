@@ -7,6 +7,7 @@ import game.util.*;
 public abstract class APersonage {
     public int currX;
     public int currY;
+    public int direct = Direction.DOWN; // direction of motion
     protected boolean visible = true;
     protected Color color;
     public GameMap gmap;

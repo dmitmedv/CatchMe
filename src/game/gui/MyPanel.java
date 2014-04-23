@@ -15,8 +15,8 @@ import java.awt.event.KeyListener;
 
 class MyPanel extends JPanel implements KeyListener {
 
-    Player player = new Player(0, 0, Color.BLUE);
-    Monster monster = new Monster(0, 10, Color.RED);
+    Player player = new Player(0, 0, Color.ORANGE);
+    Monster monster = new Monster(29, 29, Color.RED);
     GameMap map = new GameMap(player, monster);
     public boolean gameOver = false;
     Timer timer;
@@ -24,13 +24,15 @@ class MyPanel extends JPanel implements KeyListener {
     MyPanel() {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                Coordinate tmp = monster.getNextStep();
-                monster.moveXY(  tmp  );
-                if (monster.currX == player.currX && monster.currY == player.currY) gameOver = true;
+                monster.moveXY(  monster.getNextStep()  );
+                if ( gameOver() ) {
+                    gameOver = true;
+                    timer.stop();
+                }
                 repaint();
             }
         };
-        timer = new Timer(200, actionListener);
+        timer = new Timer(400, actionListener);
     }
 
     public void keyPressed(KeyEvent keyEvent) {
@@ -55,7 +57,10 @@ class MyPanel extends JPanel implements KeyListener {
                 timer.start();
                 break;
         }
-        if (monster.currX == player.currX && monster.currY == player.currY) gameOver = true;
+        if ( gameOver() ) {
+            gameOver = true;
+            timer.stop();
+        }
         repaint();
     }
 
@@ -66,5 +71,9 @@ class MyPanel extends JPanel implements KeyListener {
         super.paintComponent(g);
         map.paint(g);
         if ( gameOver ) g.drawString("GAME OVER", 20, 20);
+    }
+
+    private boolean gameOver() {
+        return (monster.currX == player.currX && monster.currY == player.currY);
     }
 }
