@@ -1,9 +1,10 @@
 package game.arena.objects;
 
 import game.arena.GameMap;
-import game.util.Coord;
+import game.util.Coordinate;
 
 import java.awt.*;
+import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -11,10 +12,10 @@ import java.util.Stack;
 public final class Monster extends APersonage {
 
     int tmp_map[][] = new int[GameMap.SIZE_MAP][GameMap.SIZE_MAP];
-    int x = -1, y = -1;
-    Coord path_map[][] = new Coord[GameMap.SIZE_MAP][GameMap.SIZE_MAP];
-    Queue<Coord> q = new LinkedList<Coord>();
-    Stack<Coord> path = new Stack<Coord>();
+    int xPlayer = -1, yPlayer = -1;
+    Coordinate path_map[][] = new Coordinate[GameMap.SIZE_MAP][GameMap.SIZE_MAP];
+    Queue<Coordinate> q = new LinkedList<Coordinate>();
+    Stack<Coordinate> pathToPlayer = new Stack<Coordinate>();
     boolean fFlag = false;
 
     public Monster(int startX, int startY, Color c) {
@@ -23,110 +24,92 @@ public final class Monster extends APersonage {
 
     void setupSearch() {
         // copy matrix and reset path_map
-        for(int i =  0; i < GameMap.SIZE_MAP; i++) {
+        for(int i = 0; i < GameMap.SIZE_MAP; i++) {
             for (int j = 0; j < GameMap.SIZE_MAP; j++) {
-
                 this.tmp_map[i][j] = this.gmap.map[i][j];
-                this.path_map[i][j] = new Coord(-1, -1);
+                this.path_map[i][j] = new Coordinate(-1, -1);
             }
         }
-        int de=1;
+
         // reset
         this.fFlag = false;
-        this.path.clear();
+        this.pathToPlayer.clear();
         this.q.clear();
+        this.gmap.pathToPlayer.clear();
 
         // init
-        int debug = 1;
-        this.path_map[this.currX][this.currY].setXY(this.currX, this.currY);
+        this.path_map[this.currX][this.currY].setXY(this.currX, this.currY); // label: start point
         this.tmp_map[this.gmap.player.getCurrX()]
                     [this.gmap.player.getCurrY()] = 6;  // set player
-        this.tmp_map[this.currX]
-                    [this.currY] = 9;                       // set monster
 
         q.add(  this.getCurrentPos()  );
         this.tmp_map[this.currX][this.currY] = 5; // visited
     }
 
     private void BFS() {
-        //
         if (q.isEmpty()) return;
-        Coord curr = q.remove();
-        System.out.println("->" + curr.x + ", " + curr.y + " : " + this.tmp_map[curr.x][curr.y]);
+        Coordinate curr = q.remove();
+        //System.out.println("->" + curr.x + ", " + curr.y + " : " + this.tmp_map[curr.x][curr.y]); // BFS log
         if (this.tmp_map[curr.x][curr.y] == 6) {
             fFlag = true;
-            System.out.println("FIND:" + curr.x + " " + curr.y);
-            x = curr.x;
-            y = curr.y;
+            System.out.println("FIND:" + curr.x + " " + curr.y);  // location log
+            xPlayer = curr.x;
+            yPlayer = curr.y;
             return;
         }
-        //this.tmp_map[curr.x][curr.y] = 5; // visited
 
         // push in queue children (from 4 possible)
         if (curr.x > 0 && (this.tmp_map[curr.x - 1][curr.y] == 0 || this.tmp_map[curr.x - 1][curr.y] == 6)) { // UP
-            q.add(new Coord(curr.x - 1, curr.y));
+            q.add(new Coordinate(curr.x - 1, curr.y));
             this.path_map[curr.x - 1][curr.y].setXY(curr.x, curr.y);
             if (this.tmp_map[curr.x-1][curr.y] != 6) this.tmp_map[curr.x-1][curr.y] = 5; // visited
         }
         if (curr.x < GameMap.SIZE_MAP-1 && (this.tmp_map[curr.x + 1][curr.y] == 0 || this.tmp_map[curr.x + 1][curr.y] == 6)) { // DOWN
-            q.add(new Coord(curr.x + 1, curr.y));
+            q.add(new Coordinate(curr.x + 1, curr.y));
             this.path_map[curr.x + 1][curr.y].setXY(curr.x, curr.y);
             if (this.tmp_map[curr.x+1][curr.y] != 6) this.tmp_map[curr.x+1][curr.y] = 5; // visited
         }
         if (curr.y > 0 && (this.tmp_map[curr.x][curr.y - 1] == 0 || this.tmp_map[curr.x][curr.y - 1] == 6)) {  // LEFT
-            q.add(new Coord(curr.x, curr.y - 1));
+            q.add(new Coordinate(curr.x, curr.y - 1));
             this.path_map[curr.x][curr.y - 1].setXY(curr.x, curr.y);
-            if (this.tmp_map[curr.x][curr.y-1] != 6) this.tmp_map[curr.x][curr.y-1] = 5; // visited
+            if (this.tmp_map[curr.x][curr.y - 1] != 6) this.tmp_map[curr.x][curr.y - 1] = 5; // visited
         }
         if (curr.y < GameMap.SIZE_MAP-1 && (this.tmp_map[curr.x][curr.y + 1] == 0 || this.tmp_map[curr.x][curr.y + 1] == 6)) { // RIGHT
-            q.add(new Coord(curr.x, curr.y + 1));
+            q.add(new Coordinate(curr.x, curr.y + 1));
             this.path_map[curr.x][curr.y + 1].setXY(curr.x, curr.y);
             if (this.tmp_map[curr.x][curr.y+1] != 6) this.tmp_map[curr.x][curr.y+1] = 5; // visited
         }
         this.BFS();
     }
 
-    private Coord backTrace(Coord p) {
+    private Coordinate backTrace(Coordinate p) {
         if (this.path_map[p.x][p.y].x == p.x && this.path_map[p.x][p.y].y == p.y) {
-            if (!path.empty()) {
-                path.pop();
-                if (path.empty()) {
-                    return this.gmap.player.getCurrentPos();
-                    //int err2 = 3;
-                }
-                return path.peek();
-            } else {
-                int err = 2;
+            if (!pathToPlayer.empty()) {
+                pathToPlayer.pop();
+                Coordinate result = pathToPlayer.peek();
+                return result;
             }
         }
-        path.push(new Coord(this.path_map[p.x][p.y].x, this.path_map[p.x][p.y].y));
-        System.out.println("stack-> " + path.peek());
-        return backTrace(path.peek());
+        pathToPlayer.push(new Coordinate(this.path_map[p.x][p.y].x, this.path_map[p.x][p.y].y));
+        this.gmap.pathToPlayer.add(this.pathToPlayer.peek());
+        //System.out.println("stack-> " + pathToPlayer.peek());  // path to player Log
+        return backTrace(pathToPlayer.peek());
     }
 
-    public Coord getNextStep() {
+    public Coordinate getNextStep() {
         this.setupSearch();
         this.BFS();
-        return this.backTrace(new Coord(this.x, this.y));
+        return this.backTrace(new Coordinate(this.xPlayer, this.yPlayer));
     }
 
     public void paint(Graphics g) {
         g.setColor(color);
         g.fillRect(
-                currY*GameMap.SIZE_FIELD+2,
-                currX*GameMap.SIZE_FIELD+2,
-                      GameMap.SIZE_FIELD-3,
-                      GameMap.SIZE_FIELD-3
+                currY * GameMap.SIZE_FIELD + 2,
+                currX * GameMap.SIZE_FIELD + 2,
+                        GameMap.SIZE_FIELD - 3,
+                        GameMap.SIZE_FIELD - 3
         );
         g.setColor(Color.BLACK);
     }
-
-    private Coord revertXY(Coord p) {
-        int tmp;
-        tmp = p.x;
-        p.x = p.y;
-        p.y = tmp;
-        return p;
-    }
-
 }

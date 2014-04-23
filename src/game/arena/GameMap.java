@@ -2,8 +2,10 @@ package game.arena;
 
 import game.arena.objects.Monster;
 import game.arena.objects.Player;
+import game.util.Coordinate;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by dmedvedev on 21.04.2014.
@@ -15,6 +17,8 @@ public class GameMap {
 
     public Player player;
     public Monster monster;
+
+    public ArrayList<Coordinate> pathToPlayer = new ArrayList<Coordinate>();
 
     public int[][] map = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -75,6 +79,18 @@ public class GameMap {
                 }
             }
         }
+
+        // path to Player
+        /*for (Coordinate el : this.pathToPlayer) {
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillRect(
+                    el.y * GameMap.SIZE_FIELD + 2,
+                    el.x * GameMap.SIZE_FIELD + 2,
+                    GameMap.SIZE_FIELD - 3,
+                    GameMap.SIZE_FIELD - 3
+            );
+            g.setColor(Color.BLACK);
+        }*/
 
         // objects
         player.paint(g);

@@ -11,10 +11,10 @@ public abstract class APersonage {
     protected Color color;
     public GameMap gmap;
 
-    Coord getCurrentPos() {
-        return new Coord(currX, currY);
+    Coordinate getCurrentPos() {
+        return new Coordinate(currX, currY);
     }
-    public void moveXY(Coord coord) {
+    public void moveXY(Coordinate coord) {
         this.currX = coord.x;
         this.currY = coord.y;
     }
@@ -38,7 +38,7 @@ public abstract class APersonage {
             case Direction.UP:   currX--; break;
             case Direction.LEFT: currY--; break;
             case Direction.DOWN: currX++; break;
-            case Direction.RIGHT:currY++; break; // *
+            case Direction.RIGHT:currY++; break;
         }
     }
     abstract public void paint(Graphics g);
