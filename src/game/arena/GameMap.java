@@ -7,19 +7,16 @@ import game.util.Coordinate;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Created by dmedvedev on 21.04.2014.
- */
 public class GameMap {
 
     final static public int SIZE_FIELD = 20;
     final static public int SIZE_MAP = 30;
 
+    public static GameMap gameMap;
+
     public Player player;
     public Monster monster;
-
     public ArrayList<Coordinate> pathToPlayer = new ArrayList<Coordinate>();
-
     public int[][] map = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -53,10 +50,26 @@ public class GameMap {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0}
     };
 
-    public GameMap(Player player, Monster monster) {
+    private GameMap() {}
+
+    private GameMap(Player player, Monster monster) {
         this.player = player;
         this.monster = monster;
         monster.gmap = this;
+    }
+
+    public static GameMap getInstance(Player player, Monster monster) {
+        if (gameMap == null) {
+            gameMap = new GameMap(player, monster);
+        }
+        return gameMap;
+    }
+
+    public static GameMap getInstance() {
+        if (gameMap == null) {
+            gameMap = new GameMap();
+        }
+        return gameMap;
     }
 
     public boolean isFreeXY(int x, int y) {

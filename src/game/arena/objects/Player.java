@@ -1,14 +1,24 @@
 package game.arena.objects;
 
 import game.arena.GameMap;
+import game.arena.attributes.Bluster;
+import game.arena.attributes.Gun;
 import game.util.Direction;
+import game.util.Weapon;
 
 import java.awt.*;
 
 public final class Player extends APersonage {
 
+    private int weapon = Weapon.BLUSTER;
+    private Gun gun = new Bluster();
+
     public Player(int startX, int startY, Color c) {
         super(startX, startY, c);
+    }
+
+    public void shoot() {
+        this.gun.shoot();
     }
 
     public void paint(Graphics g) {
@@ -28,24 +38,24 @@ public final class Player extends APersonage {
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
                         currY * GameMap.SIZE_FIELD + 10 + 1,
-                        currX * GameMap.SIZE_FIELD + 5 + 1);
+                        currX * GameMap.SIZE_FIELD + 0 + 1);
                 break;
             case Direction.LEFT:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
-                        currY * GameMap.SIZE_FIELD + 5 + 1,
+                        currY * GameMap.SIZE_FIELD + 0 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
             case Direction.DOWN:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                            currX * GameMap.SIZE_FIELD + 10 + 1,
                            currY * GameMap.SIZE_FIELD + 10 + 1,
-                           currX * GameMap.SIZE_FIELD + 15 + 1);
+                           currX * GameMap.SIZE_FIELD + 20 + 1);
                 break;
             case Direction.RIGHT:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
-                        currY * GameMap.SIZE_FIELD + 15 + 1,
+                        currY * GameMap.SIZE_FIELD + 20 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
         }

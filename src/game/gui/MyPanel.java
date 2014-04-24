@@ -16,7 +16,7 @@ class MyPanel extends JPanel implements KeyListener {
 
     Player player = new Player(0, 0, Color.ORANGE);
     Monster monster = new Monster(0, 5, Color.RED);
-    GameMap map = new GameMap(player, monster);
+    GameMap map = GameMap.getInstance(player, monster);
     public boolean gameOver = false;
     Timer timer;
 
@@ -31,7 +31,7 @@ class MyPanel extends JPanel implements KeyListener {
                 repaint();
             }
         };
-        timer = new Timer(700, actionListener);
+        timer = new Timer(240, actionListener);
     }
 
     public void keyPressed(KeyEvent keyEvent) {
@@ -52,6 +52,9 @@ class MyPanel extends JPanel implements KeyListener {
             case KeyEvent.VK_DOWN:
                 if ( map.isFreeXY(player.getCurrY(), player.getCurrX()+1) ) player.move(Direction.DOWN);
                 player.setDirection(Direction.DOWN);
+                break;
+            case KeyEvent.VK_SPACE:
+                player.shoot();
                 break;
             case KeyEvent.VK_ESCAPE:
                 timer.stop();
