@@ -25,15 +25,29 @@ public final class Player extends APersonage {
         // pushka
         switch (this.direct) {
             case Direction.UP:
+                g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
+                        currX * GameMap.SIZE_FIELD + 10 + 1,
+                        currY * GameMap.SIZE_FIELD + 10 + 1,
+                        currX * GameMap.SIZE_FIELD + 5 + 1);
                 break;
             case Direction.LEFT:
+                g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
+                        currX * GameMap.SIZE_FIELD + 10 + 1,
+                        currY * GameMap.SIZE_FIELD + 5 + 1,
+                        currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
             case Direction.DOWN:
-                g.drawLine(currY+10, currX+10, currY+10, currX+15);
+                g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
+                           currX * GameMap.SIZE_FIELD + 10 + 1,
+                           currY * GameMap.SIZE_FIELD + 10 + 1,
+                           currX * GameMap.SIZE_FIELD + 15 + 1);
                 break;
             case Direction.RIGHT:
+                g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
+                        currX * GameMap.SIZE_FIELD + 10 + 1,
+                        currY * GameMap.SIZE_FIELD + 15 + 1,
+                        currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
         }
-
     }
 }
