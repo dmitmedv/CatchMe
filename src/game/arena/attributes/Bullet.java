@@ -2,11 +2,9 @@ package game.arena.attributes;
 
 import game.arena.GameMap;
 import game.util.Direction;
-
-import javax.swing.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Bullet {
     private int direction;
@@ -14,25 +12,17 @@ public class Bullet {
     private int currY;
     private int speed;
     private Color color = Color.GRAY;
-    Timer timer;
+    Timer timer = new Timer();
     private GameMap gmap;
+    private Move move = new Move();
 
-    public Bullet(int speed, int direction, GameMap gmap) {
+    public Bullet(int startX, int startY, int speed, int direction, GameMap gmap) {
+        this.currX = startX;
+        this.currY = startY;
         this.speed = speed;
         this.direction = direction;
         this.gmap = gmap;
-        ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                move();
-                if ( false ) {
-                    /*gameOver = true;*/
-                    timer.stop();
-                }
-                //repaint();
-                System.out.println("motion of bullet" + currX + " " + currY);
-            }
-        };
-        timer = new Timer(speed, actionListener);
+        timer.schedule(move, 0, speed);
     }
 
     public void move() {
@@ -42,11 +32,14 @@ public class Bullet {
             case Direction.LEFT:
                 break;
             case Direction.DOWN:
-                if (gmap.isFreeXY(this.currX, this.currX)) {
+                if (gmap.isFreeXY(this.currX, this.currY)) {
                     this.currX++;
                 }
                 break;
             case Direction.RIGHT:
+                if (gmap.isFreeXY(this.currX, this.currY)) {
+                    this.currY++;
+                }
                 break;
         }
     }
@@ -61,5 +54,16 @@ public class Bullet {
                 GameMap.SIZE_FIELD - 3
         );
         g.setColor(Color.BLACK);
+    }
+
+    class Move extends TimerTask {
+        public void run() {
+            move();
+            System.out.println("motion of bullet: " + currX + " " + currY);
+            if (! gmap.isFreeXY(currX, currY) ) {
+                timer.cancel();
+                System.out.println("END bullet");
+            }
+        }
     }
 }

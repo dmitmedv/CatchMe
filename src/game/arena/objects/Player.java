@@ -1,7 +1,7 @@
 package game.arena.objects;
 
 import game.arena.GameMap;
-import game.arena.attributes.Bluster;
+import game.arena.attributes.Blaster;
 import game.arena.attributes.Gun;
 import game.util.Direction;
 import game.util.Weapon;
@@ -11,14 +11,14 @@ import java.awt.*;
 public final class Player extends APersonage {
 
     private int weapon = Weapon.BLUSTER;
-    private Gun gun = new Bluster();
+    private Gun gun = new Blaster();
 
     public Player(int startX, int startY, Color c) {
         super(startX, startY, c);
     }
 
     public void shoot() {
-        this.gun.shoot();
+        this.gun.shoot(currX, currY, this.direct);
     }
 
     public void paint(Graphics g) {

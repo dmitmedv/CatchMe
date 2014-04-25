@@ -31,7 +31,7 @@ class MyPanel extends JPanel implements KeyListener {
                 repaint();
             }
         };
-        timer = new Timer(240, actionListener);
+        timer = new Timer(180, actionListener);
     }
 
     public void keyPressed(KeyEvent keyEvent) {

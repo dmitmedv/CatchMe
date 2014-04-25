@@ -122,24 +122,24 @@ public final class Monster extends APersonage {
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
                         currY * GameMap.SIZE_FIELD + 10 + 1,
-                        currX * GameMap.SIZE_FIELD + 5 + 1);
+                        currX * GameMap.SIZE_FIELD + 0 + 1);
                 break;
             case Direction.LEFT:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
-                        currY * GameMap.SIZE_FIELD + 5 + 1,
+                        currY * GameMap.SIZE_FIELD + 0 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
             case Direction.DOWN:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
                         currY * GameMap.SIZE_FIELD + 10 + 1,
-                        currX * GameMap.SIZE_FIELD + 15 + 1);
+                        currX * GameMap.SIZE_FIELD + 20 + 1);
                 break;
             case Direction.RIGHT:
                 g.drawLine(currY * GameMap.SIZE_FIELD + 10 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1,
-                        currY * GameMap.SIZE_FIELD + 15 + 1,
+                        currY * GameMap.SIZE_FIELD + 20 + 1,
                         currX * GameMap.SIZE_FIELD + 10 + 1);
                 break;
         }
